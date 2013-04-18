@@ -1,5 +1,7 @@
 package lab.spider;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -57,7 +59,14 @@ public class Spider {
 	 */
 	public void crawl(String beginningUrl) {
 		work.add(beginningUrl);
-		
+//		int x = work.size();
+//		int n = 0;
+//		while(maxUrls ) {
+		for(String link : work)
+//			n++;
+			processPage(work.element());
+			work.remove();
+		}
 		// TODO: While there is remaining work and we haven't
 		// reach the maximum # of finished urls, process
 		// the next unfinshed url.  After processing, mark
@@ -73,6 +82,13 @@ public class Spider {
 	 */
 	public void processPage(String url) {
 		String html = helper.retrieve(url);
+		List<String> extractList = helper.extractLinks(url, html);
+		for(String link : extractList) {
+			if (!helper.isImage(link)) {
+				work.add(link);
+				urlCounter.countWord(link);
+			}
+		}
 		
 		// TODO: extract all the links from the url
 		// For each link that isn't an image, increment the
